@@ -151,6 +151,8 @@ const GroupTaskForm: React.FC = () => {
             fullWidth
             label="First Name"
             variant="outlined"
+            value={task}
+            onChange={(e) => setTask(e.target.value)}
             size="small"
           />
         </Grid>
@@ -158,6 +160,8 @@ const GroupTaskForm: React.FC = () => {
           <TextField
             fullWidth
             label="Last Name"
+            value={task}
+            onChange={(e) => setTask(e.target.value)}
             variant="outlined"
             size="small"
           />
@@ -166,6 +170,8 @@ const GroupTaskForm: React.FC = () => {
           <TextField
             fullWidth
             label="Email"
+            value={task}
+            onChange={(e) => setTask(e.target.value)}
             variant="outlined"
             size="small"
           />
