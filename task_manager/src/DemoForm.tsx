@@ -1,8 +1,4 @@
-import React, { useState } from 'react';
-import { Box, ThemeProvider } from '@mui/material';
-
-const DemoForm: React.FC = () => {
-    return <Box>Testing</Box>import React, { useState } from 'react';
+    import React, { useState } from 'react';
     import {
       Grid,
       Box,
@@ -24,7 +20,7 @@ const DemoForm: React.FC = () => {
       [key: string]: string[];
     }
 
-    const GroupTaskForm: React.FC = () => {
+    const DemoForm: React.FC = () => {
       const [groupName, setGroupName] = useState<string>('');
       const [task, setTask] = useState<string>('');
       const [groups, setGroups] = useState<Groups>({});
@@ -202,9 +198,5 @@ const DemoForm: React.FC = () => {
         </Box>
       );
     };
-
-    export default GroupTaskForm;
-
-}
 
 export default DemoForm;
