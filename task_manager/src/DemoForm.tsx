@@ -12,9 +12,7 @@
       Divider,
       IconButton,
     } from '@mui/material';
-    import AddIcon from '@mui/icons-material/Add';
-    import ModeIcon from '@mui/icons-material/Mode';
-    import DeleteIcon from '@mui/icons-material/Delete';
+   
 
     interface Groups {
       [key: string]: string[];
@@ -47,15 +45,6 @@
           setTask('');
         }
       };
-
-      const handleEditTask = (group:string) : void => {
-          if (task.trim()) {
-            setGroups({
-                ...groups,[group] : [...groups[group],task],
-            });
-            setTask('');
-          }
-      }
 
       return (
          <Box
