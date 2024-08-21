@@ -40,24 +40,24 @@ const GroupTaskForm: React.FC = () => {
     }
   };
 
-  const handleAddTask = (group: string): void => {
-    if (task.trim()) {
-      setGroups({
-        ...groups,
-        [group]: [...groups[group], task],
-      });
-      setTask('');
-    }
-  };
+  // const handleAddTask = (group: string): void => {
+  //   if (task.trim()) {
+  //     setGroups({
+  //       ...groups,
+  //       [group]: [...groups[group], task],
+  //     });
+  //     setTask('');
+  //   }
+  // };
 
-  const handleEditTask = (group:string) : void => {
-      if (task.trim()) {
-        setGroups({
-            ...groups,[group] : [...groups[group],task],
-        });
-        setTask('');
-      }
-  }
+  // const handleEditTask = (group:string) : void => {
+  //     if (task.trim()) {
+  //       setGroups({
+  //           ...groups,[group] : [...groups[group],task],
+  //       });
+  //       setTask('');
+  //     }
+  // }
 
   return (
      <Box
