@@ -40,15 +40,15 @@ const GroupTaskForm: React.FC = () => {
     }
   };
 
-  // const handleAddTask = (group: string): void => {
-  //   if (task.trim()) {
-  //     setGroups({
-  //       ...groups,
-  //       [group]: [...groups[group], task],
-  //     });
-  //     setTask('');
-  //   }
-  // };
+  const handleAddTask = (group: string): void => {
+    if (task.trim()) {
+      setGroups({
+        ...groups,
+        [group]: [...groups[group], task],
+      });
+      setTask('');
+    }
+  };
 
   // const handleEditTask = (group:string) : void => {
   //     if (task.trim()) {
@@ -177,7 +177,7 @@ const GroupTaskForm: React.FC = () => {
           />
         </Grid>
         <Grid item xs={12} sm={3} md={3} display="flex" justifyContent="flex-start">
-          <Button variant="contained" color="primary" size="medium">
+          <Button variant="contained" color="primary" size="medium" onClick={() => handleAddTask(group)}>
            ADD MORE TASK
           </Button>
         </Grid>
