@@ -16,10 +16,6 @@ import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 
-interface Groups {
-  [key: string]: string[];
-}
-
 interface TaskDetails {
   id: string | number;
   task: string;
