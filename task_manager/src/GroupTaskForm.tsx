@@ -28,8 +28,7 @@ interface TaskDetails {
 }
 
 const GroupTaskForm: React.FC = () => {
-  const [groupName, setGroupName] = useState<string>('');
-  const [groups, setGroups] = useState<Groups>({});
+  
   const [addMoreTask, setAddMoreTask] = useState<TaskDetails[]>([]);
   const [countTask, setCountTask] = useState<number>(0);
   const [totalAmount, setTotalAmount] = useState<number>(0);
