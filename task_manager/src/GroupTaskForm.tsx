@@ -16,6 +16,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 
+
 interface TaskDetails {
   id: string | number;
   task: string;
@@ -24,10 +25,11 @@ interface TaskDetails {
 }
 
 const GroupTaskForm: React.FC = () => {
-  
+
   const [addMoreTask, setAddMoreTask] = useState<TaskDetails[]>([]);
   const [countTask, setCountTask] = useState<number>(0);
   const [totalAmount, setTotalAmount] = useState<number>(0);
+
 
   const handleAddTask = (): void => {
     setAddMoreTask([...addMoreTask, { id: countTask, task: '', quantity: '', rate: '' }]);
@@ -140,7 +142,7 @@ const GroupTaskForm: React.FC = () => {
                         size="small"
                       />
                     </Grid>
-                    
+
                   <Grid item xs={12} sm={4} md={4}>
                   <Card>
                     <CardHeader
@@ -164,13 +166,15 @@ const GroupTaskForm: React.FC = () => {
                             <strong>Quantity:</strong> {task.quantity == '' ? <strong>NA</strong> : task.quantity}
                           </Typography>
                           <Typography variant="body1">
+                            <strong>Rate:</strong> {task.rate == '' ? <strong>NA</strong> : `$${Number(task.rate)}`}
+                          </Typography>
+                          <Typography variant="body1">
                             <strong>Total Amount:</strong> ${Number(task.quantity) * Number(task.rate)}
                           </Typography>
                         </CardContent>
                   </Card>
                   </Grid>
-
-                    <Grid item xs={12} sm={2} md={2}>
+                  <Grid item xs={12} sm={2} md={2}>
                     <Button variant="contained" color="error" size="medium" onClick={() => handleDeleteTask(index)}>
                       DELETE TASK
                     </Button>
