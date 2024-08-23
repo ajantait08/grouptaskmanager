@@ -140,13 +140,7 @@ const GroupTaskForm: React.FC = () => {
                         size="small"
                       />
                     </Grid>
-
-                    <Grid item xs={12} sm={2} md={2}>
-                    <Button variant="contained" color="error" size="medium" onClick={() => handleDeleteTask(index)}>
-                      DELETE TASK
-                    </Button>
-                  </Grid>
-
+                    
                   <Grid item xs={12} sm={4} md={4}>
                   <Card>
                     <CardHeader
@@ -174,6 +168,12 @@ const GroupTaskForm: React.FC = () => {
                           </Typography>
                         </CardContent>
                   </Card>
+                  </Grid>
+
+                    <Grid item xs={12} sm={2} md={2}>
+                    <Button variant="contained" color="error" size="medium" onClick={() => handleDeleteTask(index)}>
+                      DELETE TASK
+                    </Button>
                   </Grid>
                   </Grid>
                 ))}
