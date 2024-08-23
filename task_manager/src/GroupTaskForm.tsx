@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Grid,
   Box,
@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 
 interface Groups {
@@ -33,7 +33,8 @@ const GroupTaskForm: React.FC = () => {
   const [quantity, setQuantity] = useState<string>('');
   const [rate, setRate] = useState<string>('');
   const [addMoreTask, setAddMoreTask] = useState<TaskDetails[]>([]);
-  const [countTask, setCounttask] = useState<number>(0);
+  const [countTask, setCountTask] = useState<number>(0);
+  const [totalAmount, setTotalAmount] = useState<number>(0);
 
   const handleCreateGroup = (): void => {
     if (groupName.trim()) {
@@ -44,10 +45,10 @@ const GroupTaskForm: React.FC = () => {
 
   const handleAddTask = (): void => {
     setAddMoreTask([...addMoreTask, { id: countTask, task: '', quantity: '', rate: '' }]);
-    setCounttask(countTask + 1);
+    setCountTask(countTask + 1);
   };
 
-  const handleTaskChange = (index: number, field: keyof TaskDetails, value: string) => {
+  const handleTaskChange = (index: number, field: keyof TaskDetails, value: string | number) => {
     const updatedTasks = [...addMoreTask];
     updatedTasks[index] = {
       ...updatedTasks[index],
@@ -56,32 +57,65 @@ const GroupTaskForm: React.FC = () => {
     setAddMoreTask(updatedTasks);
   };
 
+  const handleChange = (index: number, event: SelectChangeEvent<string | number>) => {
+    const updatedTasks = [...addMoreTask];
+    updatedTasks[index] = {
+      ...updatedTasks[index],
+      quantity: event.target.value,
+    };
+    setAddMoreTask(updatedTasks);
+  };
+
+  const handleDeleteTask = (index: number): void => {
+    const updatedTasks = addMoreTask.filter((_, i) => i !== index);
+    setAddMoreTask(updatedTasks);
+  };
+
+  useEffect(() => {
+    const total = addMoreTask.reduce((sum, task) => {
+      return sum + Number(task.quantity) * Number(task.rate);
+    }, 0);
+    setTotalAmount(total);
+  }, [addMoreTask]);
+
   return (
     <Box alignItems="center" gap={4} p={2}>
-      <Box>
+      <Box sx={{m:2}}>
         <Typography
-          variant="h4"
-          align="center"
+          variant="body1"
+          align="left"
           sx={{
             textDecoration: 'underline',
             textUnderlineOffset: '4px',
             fontWeight: 600,
           }}
         >
-          CREATE GROUPS
+          CREATE TASKS
         </Typography>
       </Box>
 
       <Divider />
+      {/* <FormControl fullWidth size="small">
+      <FormControlLabel
+        control={
+          <Switch
+            checked={isGroupingEnabled}
+            onChange={() => setIsGroupingEnabled(!isGroupingEnabled)}
+            color="primary"
+          />
+        }
+        label="Enable Grouping"
+      />
+      </FormControl>     */}
 
       <Grid container spacing={2} style={{ marginTop: '20px' }}>
-        <Grid item md={8}>
+        <Grid item xs={12} sm={12} md={12}>
           <Paper style={{ marginBottom: '10px' }}>
             <Box component="form" sx={{ flexGrow: 1, p: 2 }} noValidate autoComplete="off">
               {countTask > 0 &&
                 addMoreTask.map((task, index) => (
-                  <Grid container spacing={2} alignItems="center" key={index}>
-                    <Grid item xs={12} sm={3} md={3}>
+                  <Grid container spacing={2} alignItems="center" key={index} sx={{ p : 2}}>
+                    <Grid item xs={12} sm={2} md={2}>
                       <TextField
                         fullWidth
                         label="Task Name"
@@ -91,15 +125,14 @@ const GroupTaskForm: React.FC = () => {
                         size="small"
                       />
                     </Grid>
-                    <Grid item xs={12} sm={3} md={3}>
-                      <FormControl variant="standard" sx={{ m: 2, minWidth: 250 }}>
-                        <InputLabel id={`quantity-label-${index}`}>Quantity</InputLabel>
+                    <Grid item xs={12} sm={2} md={2}>
+                      <FormControl fullWidth size="small">
+                        <InputLabel id="demo-simple-select-label">Quantity</InputLabel>
                         <Select
-                          labelId={`quantity-label-${index}`}
-                          id={`quantity-select-${index}`}
+                          labelId="demo-simple-select-label"
+                          id="demo-simple-select"
                           value={task.quantity}
-                          onChange={handleTaskChange(index,'quantity',SelectChangeEvent)}
-                          //onChange={(e) => handleTaskChange(index, 'quantity', e.target.value)}
+                          onChange={(event) => handleChange(index, event)}
                           label="Quantity"
                         >
                           <MenuItem value="">
@@ -111,7 +144,7 @@ const GroupTaskForm: React.FC = () => {
                         </Select>
                       </FormControl>
                     </Grid>
-                    <Grid item xs={12} sm={3} md={3}>
+                    <Grid item xs={12} sm={2} md={2}>
                       <TextField
                         fullWidth
                         label="Rate in $(dollars)"
@@ -121,6 +154,41 @@ const GroupTaskForm: React.FC = () => {
                         size="small"
                       />
                     </Grid>
+
+                    <Grid item xs={12} sm={2} md={2}>
+                    <Button variant="contained" color="error" size="medium" onClick={() => handleDeleteTask(index)}>
+                      DELETE TASK
+                    </Button>
+                  </Grid>
+
+                  <Grid item xs={12} sm={4} md={4}>
+                  <Card>
+                    <CardHeader
+                      sx={{ backgroundColor: '#c16262' }}
+                      title={
+                        <Typography
+                          variant="h4"
+                          align="center"
+                          gutterBottom
+                          sx={{ fontSize: '16px !important', fontWeight: 600 }}
+                        >
+                          Quantity and Amount Details Per Task
+                        </Typography>
+                      }
+                    />
+                    <CardContent>
+                          <Typography variant="body1">
+                            <strong>Task:</strong> {task.task == '' ? <strong>NA</strong> : task.task}
+                          </Typography>
+                          <Typography variant="body1">
+                            <strong>Quantity:</strong> {task.quantity == '' ? <strong>NA</strong> : task.quantity}
+                          </Typography>
+                          <Typography variant="body1">
+                            <strong>Total Amount:</strong> ${Number(task.quantity) * Number(task.rate)}
+                          </Typography>
+                        </CardContent>
+                  </Card>
+                  </Grid>
                   </Grid>
                 ))}
             </Box>
@@ -134,24 +202,37 @@ const GroupTaskForm: React.FC = () => {
             </Grid>
           </Paper>
         </Grid>
-        <Grid item md={4}>
-          <Card>
-            <CardHeader
-              sx={{ backgroundColor: '#c16262' }}
-              title={
-                <Typography
-                  variant="h4"
-                  align="center"
-                  gutterBottom
-                  sx={{ fontSize: '16px !important', fontWeight: 600 }}
-                >
-                  Quantity and Amount Details Per Task
-                </Typography>
-              }
-            />
-            <CardContent></CardContent>
-          </Card>
-        </Grid>
+        <Grid item xs={12} sm={4} md={4}>
+          </Grid>
+          <Grid item xs={12} sm={4} md={4}>
+          </Grid>
+        <Grid item xs={12} sm={4} md={4}>
+          <Paper style={{ marginBottom: '10px' }}>
+            <Box component="form" sx={{ flexGrow: 1, p: 2 }} noValidate autoComplete="off">
+
+            <Card>
+                    <CardHeader
+                      sx={{ backgroundColor: '#c16262' }}
+                      title={
+                        <Typography
+                          variant="h4"
+                          align="center"
+                          gutterBottom
+                          sx={{ fontSize: '16px !important', fontWeight: 600 }}
+                        >
+                          Total Amount Details
+                        </Typography>
+                      }
+                    />
+                    <CardContent>
+                        <Typography variant="body1">
+                        <strong>Total Amount:</strong> ${totalAmount}
+                        </Typography>
+                    </CardContent>
+                  </Card>
+              </Box>
+              </Paper>
+          </Grid>
       </Grid>
     </Box>
   );
